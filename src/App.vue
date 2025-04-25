@@ -10,6 +10,12 @@ const newItem = ref("");
 const inputRef = ref(null);
 // Estado para controlar o tema atual
 const currentTheme = ref("dark");
+// Estado para controlar a modal de edição
+const isEditModalOpen = ref(false);
+// Item sendo editado atualmente
+const editingItem = ref(null);
+// Texto temporário durante a edição
+const editText = ref("");
 
 // Lista de temas disponíveis no DaisyUI
 const themes = [
@@ -87,6 +93,29 @@ const addItem = () => {
     setTimeout(() => {
       inputRef.value.focus();
     }, 0);
+  }
+};
+
+// Abrir modal de edição
+const openEditModal = (item) => {
+  editingItem.value = item;
+  editText.value = item.text;
+  isEditModalOpen.value = true;
+};
+
+// Fechar modal de edição
+const closeEditModal = () => {
+  isEditModalOpen.value = false;
+  editingItem.value = null;
+  editText.value = "";
+};
+
+// Salvar alterações do item editado
+const saveEdit = () => {
+  if (editText.value.trim() && editingItem.value) {
+    editingItem.value.text = editText.value.trim();
+    saveToLocalStorage();
+    closeEditModal();
   }
 };
 
@@ -223,9 +252,30 @@ onMounted(() => {
                   </span>
                 </div>
 
+                <!-- Botão de Edição (lápis) -->
+                <button
+                  @click.stop="openEditModal(element)"
+                  class="btn btn-ghost btn-xs text-info"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                    />
+                  </svg>
+                </button>
+
                 <button
                   @click="removeItem(element.id)"
-                  class="btn btn-ghost btn-sm text-error"
+                  class="btn btn-ghost btn-xs text-error"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -254,6 +304,28 @@ onMounted(() => {
           <p>Você ainda não tem intes na lista.</p>
         </div>
       </div>
+    </div>
+
+    <!-- Modal de Edição -->
+    <div class="modal" :class="{ 'modal-open': isEditModalOpen }">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg mb-4">Editar Item</h3>
+
+        <input
+          type="text"
+          v-model="editText"
+          class="input input-bordered w-full"
+          placeholder="Editar texto do item"
+          v-if="editingItem"
+        />
+
+        <div class="modal-action">
+          <button @click="closeEditModal" class="btn">Cancelar</button>
+          <button @click="saveEdit" class="btn btn-primary">Salvar</button>
+        </div>
+      </div>
+      <!-- Fundo escuro para fechar a modal ao clicar fora -->
+      <div class="modal-backdrop" @click="closeEditModal"></div>
     </div>
   </div>
 </template>
