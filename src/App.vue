@@ -9,7 +9,7 @@ const newItem = ref("");
 // Referência para o input
 const inputRef = ref(null);
 // Estado para controlar o tema atual
-const currentTheme = ref("light");
+const currentTheme = ref("dark");
 
 // Lista de temas disponíveis no DaisyUI
 const themes = [
@@ -194,13 +194,13 @@ onMounted(() => {
           >
             <template #item="{ element }">
               <div
-                class="flex items-center p-3 rounded-lg bg-base-300 hover:bg-base-100 transition-colors"
+                class="flex items-center p-3 rounded-lg bg-neutral-content transition-colors"
                 :class="{ 'opacity-70': element.finished }"
               >
                 <div class="drag-handle p-2 cursor-move">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5"
+                    class="h-5 w-5 text-neutral"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -216,7 +216,7 @@ onMounted(() => {
 
                 <div
                   @click="toggleStatus(element)"
-                  class="flex-grow cursor-pointer"
+                  class="flex-grow cursor-pointer text-neutral"
                 >
                   <span :class="{ 'line-through': element.finished }">
                     {{ element.text }}
