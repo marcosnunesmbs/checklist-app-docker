@@ -174,9 +174,14 @@ onMounted(() => {
       </select>
     </div>
 
-    <div class="hero mb-4">
+    <div class="hero mb-4 mt-2">
       <div class="hero-content text-center">
-        <div class="max-w-md">
+        <div class="max-w-md flex items-center justify-center">
+          <img
+            src="@/assets/logo.png"
+            alt="Checklist Icon"
+            class="w-10 h-10 mr-2"
+          />
           <h1 class="text-3xl font-bold">Checklist</h1>
         </div>
       </div>
